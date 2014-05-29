@@ -13,7 +13,8 @@ get '/' do
 end
 
 post '/' do
-  session[:note]="#{params["note"]}/4"
+  session[:timesig]="#{params["timesignature"]}"
+  session[:note]="#{params["note"]}/#{session[:timesig]}"
 
   redirect '/'
 end
