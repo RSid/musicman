@@ -25,10 +25,12 @@ Your browser does not support the HTML5 canvas tag.
   var stave = new Vex.Flow.Stave(10, 0, 500);
   stave.addClef("treble").setContext(ctx).draw();
 
+  var mykey="<%= @note %>"
+
   // Create the notes
   var notes = [
     // A quarter-note C.
-    new Vex.Flow.StaveNote({ keys: ["c/4"], duration: "q" }),
+    new Vex.Flow.StaveNote({ keys: [mykey], duration: "q" }),
 
     // A quarter-note D.
     new Vex.Flow.StaveNote({ keys: ["d/4"], duration: "q" }),
