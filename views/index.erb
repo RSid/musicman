@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Man</title>
+   <script src="vexflow-min.js"></script>
+  <script src="jquery-2.1.0.min.js"></script>
+</head>
+<body>
+
+<h1>Music Man</h1>
+
+
+<canvas id="myCanvas" width="700" height="100" style="border:1px solid #c3c3c3;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<script>
+
+    var canvas = document.getElementById("myCanvas");
+  var renderer = new Vex.Flow.Renderer(myCanvas,
+    Vex.Flow.Renderer.Backends.CANVAS);
+
+  var ctx = renderer.getContext();
+  var stave = new Vex.Flow.Stave(10, 0, 500);
+  stave.addClef("treble").setContext(ctx).draw();
+
+  // Create the notes
+  var notes = [
+    // A quarter-note C.
+    new Vex.Flow.StaveNote({ keys: ["c/4"], duration: "q" }),
+
+    // A quarter-note D.
+    new Vex.Flow.StaveNote({ keys: ["d/4"], duration: "q" }),
+
+    // A quarter-note rest. Note that the key (b/4) specifies the vertical
+    // position of the rest.
+    new Vex.Flow.StaveNote({ keys: ["b/4"], duration: "qr" }),
+
+    // A C-Major chord.
+    new Vex.Flow.StaveNote({ keys: ["c/4", "e/4", "g/4"], duration: "q" })
+  ];
+
+  // Create a voice in 4/4
+  var voice = new Vex.Flow.Voice({
+    num_beats: 4,
+    beat_value: 4,
+    resolution: Vex.Flow.RESOLUTION
+  });
+
+  // Add notes to voice
+  voice.addTickables(notes);
+
+  // Format and justify the notes to 500 pixels
+  var formatter = new Vex.Flow.Formatter().
+    joinVoices([voice]).format([voice], 500);
+
+  // Render voice
+  voice.draw(ctx, stave);
+
+</script>
+
+</body>
+</html>
