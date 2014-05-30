@@ -52,8 +52,8 @@ def chordify_note (note_string,timesig_string)
 
   if note_string.include? "min"
     #minor chord, 3/4
-    note_array << ((note.next +  "\#") + '/' + timesig_string)
-    note_array << (note.next + '/' + timesig_string)
+    note_array << (middle_note + '/' + timesig_string)
+    note_array << (last_note + '/' + timesig_string)
 
   else
     #major chord, 1,3,5, note to people that it defaults to major
