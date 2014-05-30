@@ -64,14 +64,14 @@ Your browser does not support the HTML5 canvas tag.
     new Vex.Flow.StaveNote({ keys: <% if (@note_array[0]).is_a?(String) %> <%= [@note_array[0]] %> <% else %> <%= @note_array[0] %> <% end %> , duration: "q" }),
 
 // A quarter-note D.
-    new Vex.Flow.StaveNote({ keys: [mykey[1]], duration: "q" }),
+    new Vex.Flow.StaveNote({ keys: <% if (@note_array[1]).is_a?(String) %> <%= [@note_array[1]] %> <% else %> <%= @note_array[1] %> <% end %>, duration: "q" }),
 
     // A quarter-note rest. Note that the key (b/4) specifies the vertical
     // position of the rest.
-    new Vex.Flow.StaveNote({ keys: [mykey[2]], duration: "q" }),
+    new Vex.Flow.StaveNote({ keys: <% if (@note_array[2]).is_a?(String) %> <%= [@note_array[2]] %> <% else %> <%= @note_array[2] %> <% end %>, duration: "q" }),
 
     // A C-Major chord.
-    new Vex.Flow.StaveNote({ keys: [mykey[3]], duration: "q" })
+    new Vex.Flow.StaveNote({ keys: <% if (@note_array[3]).is_a?(String) %> <%= [@note_array[3]] %> <% else %> <%= @note_array[3] %> <% end %>, duration: "q" })
   ];
 
 

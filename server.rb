@@ -54,7 +54,7 @@ end
 
 get '/' do
   @note_array=note_validator([session[:note],session[:note2],session[:note3],session[:note4]])
-    binding.pry
+
   @timesig=session[:timesig]
 
   erb :index
