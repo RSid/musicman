@@ -58,21 +58,24 @@ Your browser does not support the HTML5 canvas tag.
     resolution: Vex.Flow.RESOLUTION
   });
 
+  <% unless !@note_array %>
+
   // Create the notes
   var notes = [
-    // A quarter-note C.
+    // First note in measure
     new Vex.Flow.StaveNote({ keys: <% if (@note_array[0]).is_a?(String) %> <%= [@note_array[0]] %> <% else %> <%= @note_array[0] %> <% end %> , duration: "q" }),
 
-// A quarter-note D.
+// Second note in measure
     new Vex.Flow.StaveNote({ keys: <% if (@note_array[1]).is_a?(String) %> <%= [@note_array[1]] %> <% else %> <%= @note_array[1] %> <% end %>, duration: "q" }),
 
-    // A quarter-note rest. Note that the key (b/4) specifies the vertical
-    // position of the rest.
+    // Third note in measure
     new Vex.Flow.StaveNote({ keys: <% if (@note_array[2]).is_a?(String) %> <%= [@note_array[2]] %> <% else %> <%= @note_array[2] %> <% end %>, duration: "q" }),
 
-    // A C-Major chord.
+    // Fourth note in measure
     new Vex.Flow.StaveNote({ keys: <% if (@note_array[3]).is_a?(String) %> <%= [@note_array[3]] %> <% else %> <%= @note_array[3] %> <% end %>, duration: "q" })
   ];
+
+  <% end %>
 
 
 
