@@ -45,7 +45,18 @@ Your browser does not support the HTML5 canvas tag.
   var stave = new Vex.Flow.Stave(10, 0, 500);
   stave.addClef("treble").setContext(ctx).draw();
 
-  var mykey=["<%= @note %>","<%= @note2 %>","<%= @note3 %>","<%= @note4 %>"]
+  var mykey=<%= @note_array %>
+
+  if (mykey==false) {
+    alert("Not a valid note! Stick to A-G.")
+  }
+
+  // Create a voice in 4/4
+  var voice = new Vex.Flow.Voice({
+    num_beats: <%= @timesig %>,
+    beat_value: <%= @timesig %>,
+    resolution: Vex.Flow.RESOLUTION
+  });
 
   // Create the notes
   var notes = [
@@ -63,12 +74,7 @@ Your browser does not support the HTML5 canvas tag.
     new Vex.Flow.StaveNote({ keys: [mykey[3],mykey[0]], duration: "q" })
   ];
 
-  // Create a voice in 4/4
-  var voice = new Vex.Flow.Voice({
-    num_beats: 4,
-    beat_value: 4,
-    resolution: Vex.Flow.RESOLUTION
-  });
+
 
   // Add notes to voice
   voice.addTickables(notes);

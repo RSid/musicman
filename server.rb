@@ -4,13 +4,19 @@ require 'shotgun'
 
 enable :sessions
 
+def note_validator (note_array)
+  note_array.each do |note|
+    unless ("a".."g").include? note[0]
+     return false
+    end
+  end
+end
+
 
 get '/' do
 
-  @note=session[:note]
-  @note2=session[:note2]
-  @note3=session[:note3]
-  @note4=session[:note4]
+  @note_array=note_validator([session[:note],session[:note2],session[:note3],session[:note4]])
+
   @timesig=session[:timesig]
 
   erb :index
