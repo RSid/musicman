@@ -1,0 +1,17 @@
+body {
+  font-family: Garamond, sans-serif;
+  background: lightgray;
+}
+
+h1 {
+  text-align: center;
+}
+
+.note-input {
+  padding: 5px;
+}
+
+#myCanvas {
+  background-color: tan;
+  margin: 10px;
+}

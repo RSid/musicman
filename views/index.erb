@@ -5,18 +5,19 @@
   <title>Music Man</title>
    <script src="vexflow-min.js"></script>
   <script src="jquery-2.1.0.min.js"></script>
+  <link rel='stylesheet' href='music.css'
 </head>
 <body>
 
 <h1>Music Man</h1>
 
 
-<canvas id="myCanvas" width="600" height="100" style="border:1px solid #c3c3c3;">
+<canvas id="myCanvas" width="550" height="100" style="border:1px solid #c3c3c3;">
 Your browser does not support the HTML5 canvas tag.
 </canvas>
 
-
-<form action="/" method="post">
+<div class='note-input'>
+  <form action="/" method="post">
       <label for="timesignature">Type the time signature (integers only please) </label>
       <input type="text" name="timesignature" id="timesignature"/>
       <br>
@@ -31,9 +32,10 @@ Your browser does not support the HTML5 canvas tag.
        <br>
       <label for="note4">Type the note you want to see on the stave! </label>
       <input type="text" name="note4" id="note4"/>
-
+      <br>
        <input type="submit" value="Submit measure" />
-</form>
+  </form>
+</div>
 
 <script>
 
@@ -60,20 +62,20 @@ Your browser does not support the HTML5 canvas tag.
 
   <% unless !@note_array %>
 
-  // Create the notes
-  var notes = [
-    // First note in measure
-    new Vex.Flow.StaveNote({ keys: <% if (@note_array[0]).is_a?(String) %> <%= [@note_array[0]] %> <% else %> <%= @note_array[0] %> <% end %> , duration: "q" }),
+    // Create the notes
+    var notes = [
+      // First note in measure
+      new Vex.Flow.StaveNote({ keys: <% if (@note_array[0]).is_a?(String) %> <%= [@note_array[0]] %> <% else %> <%= @note_array[0] %> <% end %> , duration: "q" }),
 
-// Second note in measure
-    new Vex.Flow.StaveNote({ keys: <% if (@note_array[1]).is_a?(String) %> <%= [@note_array[1]] %> <% else %> <%= @note_array[1] %> <% end %>, duration: "q" }),
+  // Second note in measure
+      new Vex.Flow.StaveNote({ keys: <% if (@note_array[1]).is_a?(String) %> <%= [@note_array[1]] %> <% else %> <%= @note_array[1] %> <% end %>, duration: "q" }),
 
-    // Third note in measure
-    new Vex.Flow.StaveNote({ keys: <% if (@note_array[2]).is_a?(String) %> <%= [@note_array[2]] %> <% else %> <%= @note_array[2] %> <% end %>, duration: "q" }),
+      // Third note in measure
+      new Vex.Flow.StaveNote({ keys: <% if (@note_array[2]).is_a?(String) %> <%= [@note_array[2]] %> <% else %> <%= @note_array[2] %> <% end %>, duration: "q" }),
 
-    // Fourth note in measure
-    new Vex.Flow.StaveNote({ keys: <% if (@note_array[3]).is_a?(String) %> <%= [@note_array[3]] %> <% else %> <%= @note_array[3] %> <% end %>, duration: "q" })
-  ];
+      // Fourth note in measure
+      new Vex.Flow.StaveNote({ keys: <% if (@note_array[3]).is_a?(String) %> <%= [@note_array[3]] %> <% else %> <%= @note_array[3] %> <% end %>, duration: "q" })
+    ];
 
   <% end %>
 
