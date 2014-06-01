@@ -28,41 +28,46 @@ def note_validator (note_array)
 
 end
 
-def note_step(note)
-  alphabet = ('a'..'g').to_a
+def note_step(note_and_vertpos) #interval
+  alphabet = ['c','d','e','f','g','a','b']
+
+  note=note_and_vertpos[0]
+  vertpos=note_and_vertpos[-1].to_i
+
   if (alphabet.index(note) + 2)<alphabet.length
-    alphabet[(alphabet.index(note) + 2)]
+    (alphabet[(alphabet.index(note) + 2)]) + '/' + vertpos.to_s
   elsif (alphabet.index(note) + 1)<alphabet.length
-    alphabet[0]
+    alphabet[0] + '/' + (vertpos+1).to_s
   else
-    alphabet[1]
+    alphabet[1] + '/' + (vertpos+1).to_s
   end
 end
 
 def chordify_note (note_string,vertpos)
   note=note_string[0]
-  note_array=[(note+'/' +vertpos)]
+  full_note=note+'/' +vertpos
+  note_array=[full_note]
   alphabet=('a'..'g').to_a
 
-  middle_note =  note_step(note) #alphabet[((alphabet.index(note)) + 2 )]
-  last_note =  note_step(middle_note)#alphabet[((alphabet.index(note)) + 4 )]
+  middle_note =  note_step(full_note)
+  last_note =  note_step(middle_note)
 
 
 
   if note_string.include? "min"
     #minor chord, 3/4
-    note_array << (middle_note + '/' + vertpos)
-    note_array << (last_note + '/' + vertpos)
+    note_array << (middle_note)
+    note_array << (last_note)
 
   else
     #major chord, 1,3,5, note to people that it defaults to major
-    note_array << (middle_note + '/' + vertpos)
-    note_array << (last_note + '/' + vertpos)
+    note_array << (middle_note)
+    note_array << (last_note)
 
     # alphabet[((alphabet.index(note)) + 4 )]
   end
   note_array
-
+  #binding.pry
 end
 
 def chord_or_note (note_string,vertpos)
