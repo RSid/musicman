@@ -1,6 +1,6 @@
 body {
   font-family: Garamond, sans-serif;
-  background: lightgray;
+  background: cornsilk;
 }
 
 h1 {
@@ -12,6 +12,6 @@ h1 {
 }
 
 #myCanvas {
-  background-color: tan;
+  background-color: lavender;
   margin: 10px;
 }

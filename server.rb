@@ -28,48 +28,48 @@ def note_validator (note_array)
 
 end
 
-def note_step(note, step_count)
-  alphabet = ('a'..'z').to_a
-  note_index = alphabet.index(note) + 2
-  next_note_index = note_index + step_count
-
-  alphabet[next_note_index]
+def note_step(note)
+  alphabet = ('a'..'g').to_a
+  if (alphabet.index(note) + 2)<alphabet.length
+    alphabet[(alphabet.index(note) + 2)]
+  elsif (alphabet.index(note) + 1)<alphabet.length
+    alphabet[0]
+  else
+    alphabet[1]
+  end
 end
 
-def chordify_note (note_string,timesig_string)
+def chordify_note (note_string,vertpos)
   note=note_string[0]
-  note_array=[(note+'/' +timesig_string)]
-  alphabet=('a'..'z').to_a
+  note_array=[(note+'/' +vertpos)]
+  alphabet=('a'..'g').to_a
 
-  middle_note = alphabet[((alphabet.index(note)) + 2 )]
-  last_note = alphabet[((alphabet.index(note)) + 4 )]
+  middle_note =  note_step(note) #alphabet[((alphabet.index(note)) + 2 )]
+  last_note =  note_step(middle_note)#alphabet[((alphabet.index(note)) + 4 )]
 
-  # notes = []
-  # alphabet.each_with_index do |letter, index|
-  #   if index == 0
-  #     notes << letter
-  # end
+
 
   if note_string.include? "min"
     #minor chord, 3/4
-    note_array << (middle_note + '/' + timesig_string)
-    note_array << (last_note + '/' + timesig_string)
+    note_array << (middle_note + '/' + vertpos)
+    note_array << (last_note + '/' + vertpos)
 
   else
     #major chord, 1,3,5, note to people that it defaults to major
-    note_array << (middle_note + '/' + timesig_string)
-    note_array << (last_note + '/' + timesig_string)
+    note_array << (middle_note + '/' + vertpos)
+    note_array << (last_note + '/' + vertpos)
 
     # alphabet[((alphabet.index(note)) + 4 )]
   end
   note_array
+
 end
 
-def chord_or_note (note_string,timesig_string)
+def chord_or_note (note_string,vertpos)
   if note_string.include? "chord"
-    return_note=chordify_note(note_string,timesig_string)
+    return_note=chordify_note(note_string,vertpos)
   else
-    return_note=note_string + '/' + timesig_string
+    return_note=note_string + '/' + vertpos
   end
   return_note
 end
@@ -86,10 +86,10 @@ end
 post '/' do
   session.clear
   session[:timesig] = "#{params["timesignature"]}"
-  session[:note] = chord_or_note(params["note"],session[:timesig])
-  session[:note2] = chord_or_note(params["note2"],session[:timesig])
-  session[:note3] = chord_or_note(params["note3"],session[:timesig])
-  session[:note4] = chord_or_note(params["note4"],session[:timesig])
+  session[:note] = chord_or_note(params["note"],"4")
+  session[:note2] = chord_or_note(params["note2"],"4")
+  session[:note3] = chord_or_note(params["note3"],"4")
+  session[:note4] = chord_or_note(params["note4"],"4")
 
 
   redirect '/'
