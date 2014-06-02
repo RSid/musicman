@@ -18,27 +18,22 @@ Your browser does not support the HTML5 canvas tag.
 
 <div class='note-input'>
   <form action="/" method="post">
-      <label for="timesignature">Type the time signature (integers only please) </label>
-      <input type="text" name="timesignature" id="timesignature"/>
+      <label for="numbeats">Type the number of beats in a measure (integers only please) </label>
+      <input type="text" name="numbeats" id="numbeats"/>
+      <br><br>
+      <label for="notes">Type the notes you want to see on the stave, seperated by commas. <br>
+      Defaults to notes; for chords include the word chord after the root note.
+      Defaults to major chords; for minor chords inclue the word min after the root note.
+      </label>
       <br>
-      <label for="note">Type the note you want to see on the stave! </label>
-      <input type="text" name="note" id="note"/>
-       <br>
-      <label for="note2">Type the note you want to see on the stave! </label>
-      <input type="text" name="note2" id="note2"/>
-       <br>
-      <label for="note3">Type the note you want to see on the stave! </label>
-      <input type="text" name="note3" id="note3"/>
-       <br>
-      <label for="note4">Type the note you want to see on the stave! </label>
-      <input type="text" name="note4" id="note4"/>
+      <input type="text" name="notes" id="notes"/>
       <br>
        <input type="submit" value="Submit measure" />
   </form>
 </div>
 
 <script>
-
+$(function() {
   var canvas = document.getElementById("myCanvas");
   var renderer = new Vex.Flow.Renderer(myCanvas,
     Vex.Flow.Renderer.Backends.CANVAS);
@@ -55,31 +50,26 @@ Your browser does not support the HTML5 canvas tag.
 
   // Create a voice in 4/4
   var voice = new Vex.Flow.Voice({
-    num_beats: <%= @timesig %>,
-    beat_value: <%= @timesig %>,
+    num_beats: <%= @numbeats %>,
+    beat_value: 4,
     resolution: Vex.Flow.RESOLUTION
   });
 
   <% unless !@note_array %>
 
+    var noteArray = <%= @note_array %>;
+
     // Create the notes
     var notes = [
-      // First note in measure
-      new Vex.Flow.StaveNote({ keys: <% if (@note_array[0]).is_a?(String) %> <%= [@note_array[0]] %> <% else %> <%= @note_array[0] %> <% end %> , duration: "q" }),
 
-  // Second note in measure
-      new Vex.Flow.StaveNote({ keys: <% if (@note_array[1]).is_a?(String) %> <%= [@note_array[1]] %> <% else %> <%= @note_array[1] %> <% end %>, duration: "q" }),
-
-      // Third note in measure
-      new Vex.Flow.StaveNote({ keys: <% if (@note_array[2]).is_a?(String) %> <%= [@note_array[2]] %> <% else %> <%= @note_array[2] %> <% end %>, duration: "q" }),
-
-      // Fourth note in measure
-      new Vex.Flow.StaveNote({ keys: <% if (@note_array[3]).is_a?(String) %> <%= [@note_array[3]] %> <% else %> <%= @note_array[3] %> <% end %>, duration: "q" })
     ];
 
+    $.each(noteArray, function(index, note) {
+      var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
+      notes.push(newNote);
+    });
+
   <% end %>
-
-
 
 
   // Add notes to voice
@@ -91,7 +81,7 @@ Your browser does not support the HTML5 canvas tag.
 
   // Render voice
   voice.draw(ctx, stave);
-
+});
 </script>
 
 </body>
