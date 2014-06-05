@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Amatuer Hour</title>
+  <title>Amateur Hour</title>
    <script src="vexflow-min.js"></script>
   <script src="jquery-2.1.0.min.js"></script>
   <link rel='stylesheet' href='music2.css'
 </head>
 <body>
 
-<h1>Amatuer Hour</h1>
+<h1>Amateur Hour</h1>
 
 <div class="content">
 <p>Can't read music, or just learning? Want to generate sheet music the easy way? Just enter your music below in English, and it will appear on the stave. </p>
@@ -58,7 +58,7 @@ $(function() {
 
   // Create a voice in 4/4
   var voice = new Vex.Flow.Voice({
-    num_beats: <%= @numbeats? @numbeats:4 %>,
+    num_beats: <%= @numbeats %>,
     beat_value: 4,
     resolution: Vex.Flow.RESOLUTION
   });
