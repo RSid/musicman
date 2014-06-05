@@ -58,7 +58,7 @@ $(function() {
 
   // Create a voice in 4/4
   var voice = new Vex.Flow.Voice({
-    num_beats: <%= @numbeats %>,
+    num_beats: <%= @numbeats? @numbeats:4 %>,
     beat_value: 4,
     resolution: Vex.Flow.RESOLUTION
   });
