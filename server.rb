@@ -54,18 +54,15 @@ def chordify_note (note_string,vertpos)
   note_array = [full_note]
   alphabet = ('a'..'g').to_a
 
-  # middle_note =  note_step(full_note)
-  # last_note =  note_step(middle_note)
-
 
   if note_string.include? "min"
     #minor chord, 3/4
-    middle_note = note_step(full_note,3)
+    middle_note = note_step(full_note,5)
     note_array << middle_note
     note_array << note_step(middle_note,4)
 
   else
-    #minor chord, 4/3
+    #majorchord, 4/3
     middle_note = note_step(full_note,4)
     note_array << middle_note
     note_array << note_step(middle_note,4)
@@ -93,6 +90,7 @@ end
 get '/' do
   @note_array = note_validator(session[:notes])
   @numbeats = session[:numbeats]
+  binding.pry
   erb :index
 end
 
