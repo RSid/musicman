@@ -1,0 +1,71 @@
+@font-face {
+  font-family: punk;
+  src: url(/Punk_Kid/punk_kid.ttf);
+}
+
+
+
+body {
+  font-family: Monaco, Consolas, "Lucida Console", monospace;
+  margin: 0px;
+}
+
+h1 {
+  font-family: punk;
+  color: white;
+  background-color: black;
+  text-align: center;
+  font-size: 4.5em;
+  padding: 15px;
+  margin: 0px;
+}
+
+.note-input {
+  padding: 30px;
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+.note-input label {
+  font-size: .8em;
+}
+
+#myCanvas {
+  background-color: ;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border: 5px solid black;
+
+}
+
+.canv-container {
+  padding:10px;
+}
+
+#notes {
+  width: 500px;
+}
+
+#nb {
+  font-size: .5em;
+  text-align: left;
+  padding-top: 10px;
+}
+
+p {
+  text-align: center;
+  padding: 0px 30px;
+}
+
+.content {
+  padding: 20px 80px;
+}
+
+#footer {
+  text-align: center;
+  font-size: .5em;
+}
+

@@ -5,29 +5,32 @@
   <title>Music Man</title>
    <script src="vexflow-min.js"></script>
   <script src="jquery-2.1.0.min.js"></script>
-  <link rel='stylesheet' href='music.css'
+  <link rel='stylesheet' href='music2.css'
 </head>
 <body>
 
-<h1>Music Man</h1>
+<h1>Amateur Hour</h1>
 
+<div class="content">
+<p>Can't read music, or just learning? Want to generate sheet music the easy way? Just enter your music below in English, and it will appear on the stave. </p>
 
-<canvas id="myCanvas" width="550" height="100" style="border:1px solid #c3c3c3;">
-Your browser does not support the HTML5 canvas tag.
-</canvas>
+<div class="canv-container">
+  <canvas id="myCanvas" width="520" height="100">
+  Your browser does not support the HTML5 canvas tag.
+  </canvas>
+</div>
 
 <div class='note-input'>
   <form action="/" method="post">
-      <label for="numbeats">Type the number of beats in a measure (integers only please) </label>
-      <input type="text" name="numbeats" id="numbeats"/>
+      <label for="numbeats">Type the number of beats in a measure: </label>
+      <input type="text" name="numbeats" id="numbeats" required/>
       <br><br>
-      <label for="notes">Type the notes you want to see on the stave, seperated by commas. <br>
-      Defaults to notes; for chords include the word chord after the root note.
-      Defaults to major chords; for minor chords inclue the word min after the root note.
+      <label for="notes">Type the notes you want to see on the stave, seperated by commas.
       </label>
       <br>
-      <input type="text" name="notes" id="notes"/>
-      <br>
+      <input type="text" name="notes" id="notes" required/>
+      <div id="nb"> * Defaults to displaying notes. For chords, include the word 'chord' after the root note.<br>
+      * Defaults to major chords. For minor chords inclue the word 'min' after the root note.</div>
        <input type="submit" value="Submit measure" />
   </form>
 </div>
@@ -42,10 +45,15 @@ $(function() {
   var stave = new Vex.Flow.Stave(10, 0, 500);
   stave.addClef("treble").setContext(ctx).draw();
 
-  var mykey=<%= @note_array %>
+  var noteChecker=<%= @note_array %>
+  var beatChecker=<%= @numbeats %>
 
-  if (mykey==false) {
-    alert("Not a valid note! Stick to A-G.")
+  if (noteChecker==false) {
+    alert("Not a valid note! Stick to A-G and avoid spaces before notes.")
+  }
+
+  if (beatChecker != noteChecker.length) {
+    alert("You need to enter the same number of notes as beats!")
   }
 
   // Create a voice in 4/4
@@ -65,8 +73,25 @@ $(function() {
     ];
 
     $.each(noteArray, function(index, note) {
-      var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
-      notes.push(newNote);
+      var noteString = note[1];
+        if (noteString) {
+          if (noteString.indexOf("#") > -1) {
+              var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" }).
+                addAccidental(0, new Vex.Flow.Accidental("#"));
+              notes.push(newNote);
+          }
+            else {
+              var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
+              notes.push(newNote);
+          }
+        }
+
+        else {
+
+          var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
+              notes.push(newNote);
+
+        }
     });
 
   <% end %>
@@ -84,5 +109,7 @@ $(function() {
 });
 </script>
 
+  <div id="footer">Website by Alla Hoffman. Uses <a href="http://www.vexflow.com/">Vexflow</a> for music rendering.</div>
+</div>
 </body>
 </html>

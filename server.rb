@@ -17,24 +17,34 @@ def note_validator (note_array)
             return false
           end
         end
+      elsif note.is_a?(Array)
+        note.each do |sub_note|
+          unless sub_note[0] != " "
+            return false
+          end
+        end
       end
     end
   end
 
 end
 
-def note_step(note_and_vertpos) #interval?
+def note_step(note_and_vertpos,num_half_steps)
   alphabet = ['c','d','e','f','g','a','b']
+  half_steps = ['c#','d#','e#','f#','g#','a#','b#']
+  keys = alphabet.zip(half_steps).flatten
+  #cmaj = c,e,g
+  #cmin = c,d#,g
 
   note = note_and_vertpos[0]
   vertpos = note_and_vertpos[-1].to_i
 
-  if (alphabet.index(note) + 2) < alphabet.length
-    (alphabet[(alphabet.index(note) + 2)]) + '/' + vertpos.to_s
-  elsif (alphabet.index(note) + 1) < alphabet.length
-    alphabet[0] + '/' + (vertpos+1).to_s
+  if (keys.index(note) + num_half_steps) < keys.length
+     (keys[(keys.index(note) + num_half_steps)]) + '/' + vertpos.to_s
+  elsif (keys.index(note) + 1) < keys.length
+     keys[0] + '/' + (vertpos + 1).to_s
   else
-    alphabet[1] + '/' + (vertpos+1).to_s
+    keys[1] + '/' + (vertpos + 1).to_s
   end
 end
 
@@ -44,20 +54,21 @@ def chordify_note (note_string,vertpos)
   note_array = [full_note]
   alphabet = ('a'..'g').to_a
 
-  middle_note =  note_step(full_note)
-  last_note =  note_step(middle_note)
-
+  # middle_note =  note_step(full_note)
+  # last_note =  note_step(middle_note)
 
 
   if note_string.include? "min"
     #minor chord, 3/4
-    note_array << (middle_note)
-    note_array << (last_note)
+    middle_note = note_step(full_note,3)
+    note_array << middle_note
+    note_array << note_step(middle_note,4)
 
   else
-    #major chord, 1,3,5, note to people that it defaults to major
-    note_array << (middle_note)
-    note_array << (last_note)
+    #minor chord, 4/3
+    middle_note = note_step(full_note,4)
+    note_array << middle_note
+    note_array << note_step(middle_note,4)
 
   end
   note_array
@@ -66,6 +77,9 @@ end
 def chord_or_note (note_array,vertpos)
   final_note_array = []
     note_array.each do |note_string|
+      if note_string[0]==" "
+        note_string[0]=""
+      end
       if note_string.include? "chord"
         final_note_array << chordify_note(note_string,vertpos)
       else
@@ -79,7 +93,6 @@ end
 get '/' do
   @note_array = note_validator(session[:notes])
   @numbeats = session[:numbeats]
-
   erb :index
 end
 
