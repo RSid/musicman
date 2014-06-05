@@ -88,7 +88,6 @@ end
 get '/' do
   @note_array = note_validator(session[:notes])
   @numbeats = session[:numbeats]
-  binding.pry
   erb :index
 end
 
