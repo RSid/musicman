@@ -1,6 +1,4 @@
 require 'sinatra'
-require 'pry'
-require 'shotgun'
 
 enable :sessions
 

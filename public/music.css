@@ -1,17 +1,51 @@
+@font-face {
+  font-family: Champagne_Italic;
+  src: url(/champagne_limousines/Champagne_&_Limousines_Italic.ttf);
+}
+
+@font-face {
+  font-family: Champagne;
+  src: url(/champagne_limousines/Champagne_&_Limousines.ttf);
+}
+
 body {
-  font-family: Garamond, sans-serif;
+  font-family: Champagne, "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
   background: cornsilk;
 }
 
 h1 {
+  font-family: Champagne_Italic, "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;;
   text-align: center;
+  font-size: 3em;
+  padding: 10px;
 }
 
 .note-input {
-  padding: 5px;
+  padding: 30px;
+  font-size: 1.5em;
+  margin-top: 10px;
 }
 
 #myCanvas {
   background-color: lavender;
-  margin: 10px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border: 5px solid black;
+
+}
+
+#notes {
+  width: 500px;
+}
+
+#nb {
+  font-size: .7em;
+  font-style: italic;
+}
+
+p {
+  text-align: center;
 }
