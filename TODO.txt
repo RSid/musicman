@@ -1,9 +1,7 @@
 TODO
 
-
--make user enter time (eg. 4/4)
+-make user-entered voice dictate whole measure
 -require user to enter a number of notes equal to a measure or figure out a way to hangle dummy notes while they fill it in one by one.
--make the user only have to enter 'c' or 'a', and dynamically tack whatever they entered as the time signature onto the end as the denominator
 
 -figure out more robust music handling, eg chords, bass clef, rests, etc
 -party
