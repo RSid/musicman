@@ -6,12 +6,12 @@ def note_validator (note_array)
   if note_array != nil
     note_array.each do |note|
       if note.is_a?(String)
-        unless ("a".."g").include? note[0]
+        unless ("a".."g").include? note[0].downcase
          return false
         end
       elsif note.is_a?(Array)
         note.each do |sub_note|
-          unless ("a".."g").include? sub_note[0]
+          unless ("a".."g").include? sub_note[0].downcase
             return false
           end
         end
@@ -34,7 +34,7 @@ def note_step(note_and_vertpos,num_half_steps)
   #cmaj = c,e,g
   #cmin = c,d#,g
 
-  note = note_and_vertpos[0]
+  note = note_and_vertpos[0].downcase
   vertpos = note_and_vertpos[-1].to_i
 
   if (keys.index(note) + num_half_steps) < keys.length
@@ -47,7 +47,7 @@ def note_step(note_and_vertpos,num_half_steps)
 end
 
 def chordify_note (note_string,vertpos)
-  note = note_string[0]
+  note = note_string[0].downcase
   full_note = note + '/' + vertpos
   note_array = [full_note]
   alphabet = ('a'..'g').to_a
