@@ -49,13 +49,15 @@ $(function() {
   var noteChecker=<%= @note_array %>
   var beatChecker=<%= @numbeats %>
 
-  if (noteChecker==false) {
-    alert("Not a valid note! Stick to A-G and avoid spaces before notes.")
-  }
+  <% unless !@note_array %>
 
-  if (beatChecker != noteChecker.length) {
-    alert("You need to enter the same number of notes as beats!")
-  }
+    if (noteChecker==false) {
+      alert("Not a valid note! Stick to A-G and avoid spaces before notes.")
+    }
+
+    if (beatChecker != noteChecker.length) {
+      alert("You need to enter the same number of notes as beats!")
+    }
 
   // Create a voice in 4/4
   var voice = new Vex.Flow.Voice({
@@ -63,8 +65,6 @@ $(function() {
     beat_value: 4,
     resolution: Vex.Flow.RESOLUTION
   });
-
-  <% unless !@note_array %>
 
     var noteArray = <%= @note_array %>;
 

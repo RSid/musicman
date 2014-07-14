@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'pry'
 
 enable :sessions
 
@@ -31,9 +30,7 @@ end
 def note_step(note_and_vertpos,num_half_steps)
   keys = ['c', 'c#', 'd','d#', 'e','f','f#',
     'g','g#','a','a#','b']
-#a 4 ind 9 next: ind 1
-#e 4 ind 4 next: ind 8
-#array length = 12
+
   if note_and_vertpos.include?('#')
     note = note_and_vertpos[0..1].downcase
   else
@@ -41,11 +38,12 @@ def note_step(note_and_vertpos,num_half_steps)
   end
   vertpos = note_and_vertpos[-1].to_i
   note_position_in_scale = keys.index(note)
-  # binding.pry
+
   if (note_position_in_scale + num_half_steps) < keys.length
      (keys[ (note_position_in_scale + num_half_steps) ]) + '/' + vertpos.to_s
   else
-    ( keys[ ( (note_position_in_scale + num_half_steps)%keys.length ) ] ) + '/' + (vertpos + 1).to_s
+    ( keys[ ( (note_position_in_scale + num_half_steps)%keys.length ) ] ) + '/'
+      + (vertpos + 1).to_s
   end
 end
 
@@ -88,6 +86,9 @@ def chord_or_note (note_array,vertpos)
   final_note_array
 end
 
+####################
+#CONTROLLERS/ROUTES
+####################
 
 get '/' do
   @note_array = note_validator(session[:notes])
@@ -100,7 +101,6 @@ post '/' do
   session[:numbeats] = "#{params["numbeats"]}"
   note_array = (params["notes"]).split(',')
   session[:notes] = chord_or_note(note_array,"4")
-
 
   redirect '/'
 end
