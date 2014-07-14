@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'pry'
 
 enable :sessions
 
@@ -38,7 +37,7 @@ def note_step(note_and_vertpos,num_half_steps)
   end
   vertpos = note_and_vertpos[-1].to_i
   note_position_in_scale = keys.index(note)
-  binding.pry
+
   if (note_position_in_scale + num_half_steps) < keys.length
      (keys[ (note_position_in_scale + num_half_steps) ]) + '/' + vertpos.to_s
   else
@@ -58,7 +57,6 @@ def chordify_note (note_string,vertpos)
 
   if note_string.include? "min"
     #minor chord, 3/4
-    binding.pry
     middle_note = note_step(full_note,3)
     note_array << middle_note
     note_array << note_step(middle_note,4)
