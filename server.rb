@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'pry'
 
 enable :sessions
 
@@ -28,43 +29,46 @@ def note_validator (note_array)
 end
 
 def note_step(note_and_vertpos,num_half_steps)
-  alphabet = ['c','d','e','f','g','a','b']
-  half_steps = ['c#','d#','e#','f#','g#','a#','b#']
-  keys = alphabet.zip(half_steps).flatten
-  #cmaj = c,e,g
-  #cmin = c,d#,g
-
-  note = note_and_vertpos[0].downcase
-  vertpos = note_and_vertpos[-1].to_i
-
-  if (keys.index(note) + num_half_steps) < keys.length
-     (keys[(keys.index(note) + num_half_steps)]) + '/' + vertpos.to_s
-  elsif (keys.index(note) + 1) < keys.length
-     keys[0] + '/' + (vertpos + 1).to_s
+  keys = ['c', 'c#', 'd','d#', 'e','f','f#',
+    'g','g#','a','a#','b']
+#a 4 ind 9 next: ind 1
+#e 4 ind 4 next: ind 8
+#array length = 12
+  if note_and_vertpos.include?('#')
+    note = note_and_vertpos[0..1].downcase
   else
-    keys[1] + '/' + (vertpos + 1).to_s
+    note = note_and_vertpos[0].downcase
+  end
+  vertpos = note_and_vertpos[-1].to_i
+  note_position_in_scale = keys.index(note)
+  # binding.pry
+  if (note_position_in_scale + num_half_steps) < keys.length
+     (keys[ (note_position_in_scale + num_half_steps) ]) + '/' + vertpos.to_s
+  else
+    ( keys[ ( (note_position_in_scale + num_half_steps)%keys.length ) ] ) + '/' + (vertpos + 1).to_s
   end
 end
 
 def chordify_note (note_string,vertpos)
-  note = note_string[0].downcase
+  if note_string.include?('#')
+    note = note_string[0..1].downcase
+  else
+    note = note_string[0].downcase
+  end
   full_note = note + '/' + vertpos
   note_array = [full_note]
   alphabet = ('a'..'g').to_a
 
-
   if note_string.include? "min"
     #minor chord, 3/4
-    middle_note = note_step(full_note,5)
+    middle_note = note_step(full_note,3)
     note_array << middle_note
     note_array << note_step(middle_note,4)
-
   else
     #majorchord, 4/3
     middle_note = note_step(full_note,4)
     note_array << middle_note
-    note_array << note_step(middle_note,4)
-
+    note_array << note_step(middle_note,3)
   end
   note_array
 end
