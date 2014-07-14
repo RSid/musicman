@@ -8,109 +8,104 @@
   <script src="jquery-2.1.0.min.js"></script>
   <link rel='stylesheet' href='music2.css'
 </head>
-<body>
+  <body>
+    <h1>Amateur Hour</h1>
 
-<h1>Amateur Hour</h1>
+    <div class="content">
+      <p>Can't read music, or just learning? Want to generate sheet music the easy way? Just enter your music below in English, and it will appear on the stave. </p>
 
-<div class="content">
-<p>Can't read music, or just learning? Want to generate sheet music the easy way? Just enter your music below in English, and it will appear on the stave. </p>
+      <div class="canv-container">
+        <canvas id="myCanvas" width="520" height="100">
+        Your browser does not support the HTML5 canvas tag.
+        </canvas>
+      </div>
 
-<div class="canv-container">
-  <canvas id="myCanvas" width="520" height="100">
-  Your browser does not support the HTML5 canvas tag.
-  </canvas>
-</div>
+      <div class='note-input'>
+        <form action="/" method="post">
+            <label for="numbeats">Type the number of beats in a measure: </label>
+            <input type="text" name="numbeats" id="numbeats" required/>
+            <br><br>
+            <label for="notes">Type the notes you want to see on the stave, seperated by commas.
+            </label>
+            <br>
+            <input type="text" name="notes" id="notes" required/>
+            <div id="nb"> * Defaults to displaying notes. For chords, include the word 'chord' after the root note.<br>
+            * Defaults to major chords. For minor chords inclue the word 'min' after the root note.</div>
+             <input type="submit" value="Submit measure" />
+        </form>
+      </div>
 
-<div class='note-input'>
-  <form action="/" method="post">
-      <label for="numbeats">Type the number of beats in a measure: </label>
-      <input type="text" name="numbeats" id="numbeats" required/>
-      <br><br>
-      <label for="notes">Type the notes you want to see on the stave, seperated by commas.
-      </label>
-      <br>
-      <input type="text" name="notes" id="notes" required/>
-      <div id="nb"> * Defaults to displaying notes. For chords, include the word 'chord' after the root note.<br>
-      * Defaults to major chords. For minor chords inclue the word 'min' after the root note.</div>
-       <input type="submit" value="Submit measure" />
-  </form>
-</div>
+      <script>
+        $(function() {
+          var canvas = document.getElementById("myCanvas");
+          var renderer = new Vex.Flow.Renderer(myCanvas,
+            Vex.Flow.Renderer.Backends.CANVAS);
 
-<script>
-$(function() {
-  var canvas = document.getElementById("myCanvas");
-  var renderer = new Vex.Flow.Renderer(myCanvas,
-    Vex.Flow.Renderer.Backends.CANVAS);
+          var ctx = renderer.getContext();
+          var stave = new Vex.Flow.Stave(10, 0, 500);
+          stave.addClef("treble").setContext(ctx).draw();
 
-  var ctx = renderer.getContext();
-  var stave = new Vex.Flow.Stave(10, 0, 500);
-  stave.addClef("treble").setContext(ctx).draw();
+          var noteChecker=<%= @note_array %>
+          var beatChecker=<%= @numbeats %>
 
-  var noteChecker=<%= @note_array %>
-  var beatChecker=<%= @numbeats %>
+          <% unless !@note_array %>
 
-  <% unless !@note_array %>
+            if (noteChecker==false) {
+              alert("Not a valid note! Stick to A-G and avoid spaces before notes.")
+            }
 
-    if (noteChecker==false) {
-      alert("Not a valid note! Stick to A-G and avoid spaces before notes.")
-    }
+            if (beatChecker != noteChecker.length) {
+              alert("You need to enter the same number of notes as beats!")
+            }
 
-    if (beatChecker != noteChecker.length) {
-      alert("You need to enter the same number of notes as beats!")
-    }
+            // Create a voice in 4/4
+            var voice = new Vex.Flow.Voice({
+              num_beats: <%= @numbeats %>,
+              beat_value: 4,
+              resolution: Vex.Flow.RESOLUTION
+            });
 
-  // Create a voice in 4/4
-  var voice = new Vex.Flow.Voice({
-    num_beats: <%= @numbeats %>,
-    beat_value: 4,
-    resolution: Vex.Flow.RESOLUTION
-  });
+            var noteArray = <%= @note_array %>;
 
-    var noteArray = <%= @note_array %>;
+            // Create the notes
+            var notes = [
+            ];
 
-    // Create the notes
-    var notes = [
+            $.each(noteArray, function(index, note) {
+              var noteString = note[1];
+                if (noteString) {
+                  if (noteString.indexOf("#") > -1) {
+                      var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" }).
+                        addAccidental(0, new Vex.Flow.Accidental("#"));
+                      notes.push(newNote);
+                  }
+                    else {
+                      var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
+                      notes.push(newNote);
+                  }
+                } else {
+                  var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
+                      notes.push(newNote);
+                }
+            });
 
-    ];
+          <% end %>
 
-    $.each(noteArray, function(index, note) {
-      var noteString = note[1];
-        if (noteString) {
-          if (noteString.indexOf("#") > -1) {
-              var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" }).
-                addAccidental(0, new Vex.Flow.Accidental("#"));
-              notes.push(newNote);
-          }
-            else {
-              var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
-              notes.push(newNote);
-          }
-        }
+          // Add notes to voice
+          voice.addTickables(notes);
 
-        else {
+          // Format and justify the notes to 500 pixels
+          var formatter = new Vex.Flow.Formatter().
+            joinVoices([voice]).format([voice], 500);
 
-          var newNote = new Vex.Flow.StaveNote({ keys: note , duration: "q" });
-              notes.push(newNote);
+          // Render voice
+          voice.draw(ctx, stave);
+        });
+      </script>
 
-        }
-    });
-
-  <% end %>
-
-
-  // Add notes to voice
-  voice.addTickables(notes);
-
-  // Format and justify the notes to 500 pixels
-  var formatter = new Vex.Flow.Formatter().
-    joinVoices([voice]).format([voice], 500);
-
-  // Render voice
-  voice.draw(ctx, stave);
-});
-</script>
-
-  <div id="footer">Website by Alla Hoffman. Uses <a href="http://www.vexflow.com/">Vexflow</a> for music rendering.</div>
-</div>
-</body>
+      <div id="footer">
+        Website by Alla Hoffman. Uses <a href="http://www.vexflow.com/">Vexflow</a> for music rendering.
+      </div>
+    </div>
+  </body>
 </html>
